@@ -411,6 +411,7 @@ impl DeclareV2 {
                 &mut tx_execution_context,
                 true,
                 block_context.validate_max_n_steps,
+                false,
             )?
         };
 

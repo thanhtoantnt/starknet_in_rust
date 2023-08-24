@@ -178,6 +178,7 @@ impl InvokeFunction {
             &mut self.get_execution_context(block_context.validate_max_n_steps)?,
             false,
             block_context.validate_max_n_steps,
+            false,
         )?;
 
         let call_info = verify_no_calls_to_other_contracts(&call_info)
@@ -212,6 +213,7 @@ impl InvokeFunction {
             &mut self.get_execution_context(block_context.invoke_tx_max_n_steps)?,
             true,
             block_context.invoke_tx_max_n_steps,
+            false,
         )
     }
 

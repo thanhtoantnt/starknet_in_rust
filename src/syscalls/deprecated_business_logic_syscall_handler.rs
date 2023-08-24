@@ -240,6 +240,7 @@ impl<'a, S: StateReader> DeprecatedBLSyscallHandler<'a, S> {
                 &mut self.tx_execution_context,
                 false,
                 self.block_context.invoke_tx_max_n_steps,
+                false,
             )
             .map_err(|_| StateError::ExecutionEntryPoint())?;
         Ok(())
@@ -448,6 +449,7 @@ impl<'a, S: StateReader> DeprecatedBLSyscallHandler<'a, S> {
                 &mut self.tx_execution_context,
                 false,
                 self.block_context.invoke_tx_max_n_steps,
+                false,
             )
             .map_err(|e| SyscallHandlerError::ExecutionError(e.to_string()))?;
 

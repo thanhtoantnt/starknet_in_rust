@@ -161,6 +161,7 @@ pub fn call_contract<T: StateReader>(
         &mut tx_execution_context,
         false,
         block_context.invoke_tx_max_n_steps,
+        false,
     )?;
 
     let call_info = call_info.ok_or(TransactionError::CallInfoIsNone)?;

@@ -14,7 +14,7 @@ cairo_1_tests = []
 members = ["cli", "fuzzer", "rpc_state_reader"]
 
 [workspace.dependencies]
-cairo-vm = { version = "0.8.5", features = ["cairo-1-hints"] }
+cairo-vm = { path = "../cairo-vm/vm/", package = "cairo-vm"}
 starknet_api = "0.3.0"
 num-traits = "0.2.15"
 starknet = "0.5.0"

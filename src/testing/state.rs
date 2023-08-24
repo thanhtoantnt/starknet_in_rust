@@ -155,6 +155,7 @@ impl StarknetState {
             &mut tx_execution_context,
             false,
             self.block_context.invoke_tx_max_n_steps,
+            false,
         )?;
 
         let call_info = call_info.ok_or(StarknetStateError::Transaction(

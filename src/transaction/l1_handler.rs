@@ -125,6 +125,7 @@ impl L1Handler {
                 &mut self.get_execution_context(block_context.invoke_tx_max_n_steps)?,
                 true,
                 block_context.invoke_tx_max_n_steps,
+                false,
             )?
         };
 

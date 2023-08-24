@@ -102,6 +102,7 @@ impl ExecutionEntryPoint {
         tx_execution_context: &mut TransactionExecutionContext,
         support_reverted: bool,
         max_steps: u64,
+        enable_trace: bool,
     ) -> Result<ExecutionResult, TransactionError>
     where
         T: StateReader,
@@ -120,6 +121,7 @@ impl ExecutionEntryPoint {
                     tx_execution_context,
                     contract_class,
                     class_hash,
+                    enable_trace,
                 )?;
                 Ok(ExecutionResult {
                     call_info: Some(call_info),
@@ -143,6 +145,7 @@ impl ExecutionEntryPoint {
                     contract_class,
                     class_hash,
                     support_reverted,
+                    enable_trace,
                 ) {
                     Ok(call_info) => {
                         let state_diff = StateDiff::from_cached_state(tmp_state)?;
@@ -265,6 +268,7 @@ impl ExecutionEntryPoint {
             internal_calls,
             failure_flag: false,
             gas_consumed: 0,
+            trace: vec![],
         })
     }
 
@@ -302,6 +306,7 @@ impl ExecutionEntryPoint {
             internal_calls,
             failure_flag: !call_result.is_success,
             gas_consumed: call_result.gas_consumed,
+            trace: vec![],
         })
     }
 
@@ -335,13 +340,14 @@ impl ExecutionEntryPoint {
         tx_execution_context: &mut TransactionExecutionContext,
         contract_class: Arc<ContractClass>,
         class_hash: [u8; 32],
+        enable_trace: bool,
     ) -> Result<CallInfo, TransactionError> {
         let previous_cairo_usage = resources_manager.cairo_usage.clone();
         // fetch selected entry point
         let entry_point = self.get_selected_entry_point_v0(&contract_class, class_hash)?;
 
         // create starknet runner
-        let mut vm = VirtualMachine::new(false);
+        let mut vm = VirtualMachine::new(enable_trace);
         let mut cairo_runner = CairoRunner::new(&contract_class.program, "starknet", false)?;
         cairo_runner.initialize_function_runner(&mut vm)?;
 
@@ -441,6 +447,7 @@ impl ExecutionEntryPoint {
         contract_class: Arc<CasmContractClass>,
         class_hash: [u8; 32],
         support_reverted: bool,
+        enable_trace: bool,
     ) -> Result<CallInfo, TransactionError> {
         let previous_cairo_usage = resources_manager.cairo_usage.clone();
 
@@ -448,7 +455,7 @@ impl ExecutionEntryPoint {
         let entry_point = self.get_selected_entry_point(&contract_class, class_hash)?;
 
         // create starknet runner
-        let mut vm = VirtualMachine::new(false);
+        let mut vm = VirtualMachine::new(enable_trace);
         // get a program from the casm contract class
         let program: Program = contract_class.as_ref().clone().try_into()?;
         // create and initialize a cairo runner for running cairo 1 programs.

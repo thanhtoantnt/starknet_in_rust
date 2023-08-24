@@ -51,6 +51,7 @@ pub struct CallInfo {
     pub internal_calls: Vec<CallInfo>,
     pub gas_consumed: u128,
     pub failure_flag: bool,
+    pub trace: Vec<(u32, u32)>,
 }
 
 impl CallInfo {
@@ -85,6 +86,7 @@ impl CallInfo {
             internal_calls: Vec::new(),
             gas_consumed: 0,
             failure_flag: false,
+            trace: vec![],
         }
     }
 
@@ -230,6 +232,7 @@ impl Default for CallInfo {
             events: Vec::new(),
             gas_consumed: 0,
             failure_flag: false,
+            trace: vec![],
         }
     }
 }
